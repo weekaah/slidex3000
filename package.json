@@ -1,0 +1,15 @@
+{
+  "name": "slidex3000",
+  "version": "1.0.0",
+  "description": "plain javascript slider plugin",
+  "author": "Viktor Lesic",
+  "license": "MIT",
+  "dependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-plumber": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.1"
+  }
+}
