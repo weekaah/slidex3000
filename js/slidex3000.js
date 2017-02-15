@@ -20,17 +20,25 @@
     this.fore;
     this.navButtons = [];
 
+    // slider tab navigation
+    this.controls;
+    this.dots = [];
+
+    // flags
+    this.length = this.display.children.length;
+
     this.initialize();
   };
 
   Slider.prototype = {
     initialize: function() {
-      build.call(this);
+      buildCore.call(this);
       buildNav.call(this);
+      buildDots.call(this);
     }
   }
 
-  function build() {
+  function buildCore() {
     // build container
     this.slider = document.createElement('div');
     this.slider.classList.add('slidex3000__container');
@@ -61,6 +69,29 @@
 
     // insert nav into dom
     this.slider.appendChild(this.nav);
+  }
+
+  function buildDots() {
+    var self = this;
+
+    this.controls = document.createElement('div');
+    this.controls.classList.add('slidex3000__controls');
+
+    for (var i = 0; i < this.length; i++) {
+
+      var li = document.createElement('li'),
+          dot = document.createElement('button');
+
+      li.classList.add('slidex3000__control');
+      dot.classList.add('slidex3000__dot');
+
+      li.appendChild(dot);
+      self.controls.appendChild(li);
+
+      this.dots.push(dot);
+    }
+
+    this.slider.appendChild(this.controls);
   }
 
   window.slidex3000 = function(selector, settings) {
