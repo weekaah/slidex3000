@@ -101,6 +101,9 @@
       this.dots.push(dot);
     }
 
+    // indicate active item by styling the dot
+    this.dots[this.current - 1].classList.add('slidex3000__dot--active');
+
     this.slider.appendChild(this.controls);
   }
 
@@ -143,6 +146,16 @@
     }
   }
 
+  function updateActiveDot(i) {
+    this.dots.forEach(function(item, index, array){
+      if (array.indexOf(item) === i) {
+        item.classList.add('slidex3000__dot--active');
+      } else {
+        item.classList.remove('slidex3000__dot--active');
+      }
+    });
+  }
+
   // helpers
   // ----------------------------------
   function isTouchDevice () {
@@ -178,17 +191,19 @@
       });
     });
 
-    // make sure animation is done before allowing the next event
+    // running afer the event is finished
     this.display.addEventListener('transitionend', function() {
       var cycle = (self.current === 0 || self.current > self.length);
 
       // enable looping by checking if item is last or first
       resetScroll.call(self, cycle);
 
+      // update active item indicator
+      updateActiveDot.call(self, self.current - 1);
+
       this.style.transition = 'none';
       self.isClicked = false;
     });
-
 
   }
 
