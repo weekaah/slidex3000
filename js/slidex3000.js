@@ -131,6 +131,18 @@
     this.display.style.transition = 'left' + this.animation;
   }
 
+  function resetScroll(cycle) {
+    if (cycle) {
+      if (this.current > this.length) {
+        this.display.style.left = '-100%';
+        this.current = 1;
+      } else if (this.current === 0) {
+        this.display.style.left = (-100 * this.length) + '%';
+        this.current = this.length;
+      }
+    }
+  }
+
   // helpers
   // ----------------------------------
   function isTouchDevice () {
@@ -151,8 +163,11 @@
 
     // handle slider browsing
     this.navButtons.forEach(function(button) {
-      button.addEventListener(pointerDown, function(){
+      button.addEventListener(pointerDown, function() {
+        // prevent from running if previous event is not finished
         if (self.isClicked) return;
+
+        // check what button was clicked and accordigli browse back or forward
         if (this.getAttribute('class') === 'slidex3000__back') {
           self.isClicked = true;
           scroll.call(self, -1);
@@ -164,8 +179,11 @@
     });
 
     // make sure animation is done before allowing the next event
-    this.display.addEventListener('transitionend', function(){
+    this.display.addEventListener('transitionend', function() {
       var cycle = (self.current === 0 || self.current > self.length);
+
+      // enable looping by checking if item is last or first
+      resetScroll.call(self, cycle);
 
       this.style.transition = 'none';
       self.isClicked = false;
