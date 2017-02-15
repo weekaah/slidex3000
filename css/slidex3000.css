@@ -1,0 +1,114 @@
+.slidex3000__container {
+  overflow: hidden;
+  position: relative;
+}
+
+.slidex3000__slider {
+  font-size: 0;
+  list-style: none;
+  white-space: nowrap;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  left: -100%;
+}
+
+.slidex3000__item {
+  white-space: normal;
+  display: inline-block;
+  height: 250px;
+  width: 100%;
+}
+
+.slidex3000__headline {
+  background-color: rgba(51, 51, 51, 0.35);
+  color: #fff;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 250px;
+  text-align: center;
+  height: 100%;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  position: absolute;
+}
+
+@media (min-width: 768px) {
+  .slidex3000__headline {
+    font-size: 50px;
+  }
+}
+
+.slidex3000__item > img {
+  height: 250px;
+  width: 100%;
+  object-fit: cover;
+}
+
+.slidex3000__back, .slidex3000__fore {
+  background-color: transparent;
+  border: 0;
+  height: 76px;
+  width: 76px;
+  position: absolute;
+  top: calc(50% - 38px);
+}
+
+.slidex3000__back::before, .slidex3000__back::after, .slidex3000__fore::before, .slidex3000__fore::after {
+  background-color: #fff;
+  content: "";
+  display: block;
+  height: 4px;
+  width: 17px;
+  position: absolute;
+  left: calc(50% - 14px);
+}
+
+.slidex3000__back::before, .slidex3000__fore::before {
+  margin-top: 3px;
+  transform: rotate(45deg);
+}
+
+.slidex3000__back::after, .slidex3000__fore::after {
+  margin-top: -6px;
+  transform: rotate(-45deg);
+}
+
+.slidex3000__fore {
+  right: 0;
+  transform: rotate(180deg);
+}
+
+.slidex3000__controls {
+  text-align: center;
+  width: 100%;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  position: absolute;
+  bottom: 0;
+}
+
+.slidex3000__control {
+  display: inline-block;
+}
+
+.slidex3000__control:not(:last-child) {
+  margin-right: 14px;
+}
+
+.slidex3000__dot {
+  background-color: #fff;
+  border: 0;
+  border-radius: 50%;
+  height: 15px;
+  width: 15px;
+}
+
+.slidex3000__dot:focus {
+  outline: none;
+}
+
+.slidex3000__dot--active {
+  background-color: #00a1d1;
+}
