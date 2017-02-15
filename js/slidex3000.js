@@ -156,6 +156,12 @@
     });
   }
 
+  function jumpTo(walk) {
+    this.current = walk;
+    this.display.style.left = (-100 * walk) + '%';
+    this.display.style.transition = 'left ' + this.animation;
+  }
+
   // helpers
   // ----------------------------------
   function isTouchDevice () {
@@ -188,6 +194,14 @@
           self.isClicked = true;
           scroll.call(self, 1);
         }
+      });
+    });
+
+    // slider jumping
+    this.dots.forEach(function(dot, index) {
+      dot.addEventListener(pointerDown, function() {
+        jumpTo.call(self, (index + 1));
+        updateActiveDot.call(self, index);
       });
     });
 
