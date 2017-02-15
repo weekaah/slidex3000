@@ -40,8 +40,8 @@
       buildCore.call(this);
       buildNav.call(this);
       buildDots.call(this);
-      buildItems.call(this);
       cloneItems.call(this);
+      buildItems.call(this);
       initialiteEvents.call(this);
     }
   }
@@ -157,6 +157,7 @@
   }
 
   function jumpTo(walk) {
+    console.log(walk);
     this.current = walk;
     this.display.style.left = (-100 * walk) + '%';
     this.display.style.transition = 'left ' + this.animation;
@@ -166,6 +167,17 @@
   // ----------------------------------
   function isTouchDevice () {
     return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) ? true : false;
+  }
+
+  function dropPixels(value) {
+    var oldArr = value.split(''),
+        newArr;
+
+    oldArr.splice(-2, 2);
+
+    newArr = oldArr.join('');
+
+    return parseInt(newArr);
   }
 
   // event handling
@@ -217,6 +229,48 @@
 
       this.style.transition = 'none';
       self.isClicked = false;
+    });
+
+    // dragging
+    // register that the pointer is down
+    this.slider.addEventListener(pointerDown, function(e) {
+      e.preventDefault();
+      isDown = true;
+      startX = (isTouchDevice() ? e.changedTouches[0].pageX : e.pageX);
+      scrollLeft = dropPixels(window.getComputedStyle(self.display).left);
+    });
+
+    // register that the pointer is up from slider
+    this.slider.addEventListener(pointerUp, function(e) {
+      isDown = false;
+    });
+
+    // register that the pointer is up from slide
+    this.items.forEach(function(item, index) {
+      item.addEventListener(pointerUp, function(e) {
+        // prevent from running if previous event is not finished
+        if (self.isClicked) return;
+
+        // position the slide
+        self.isClicked = true;
+        if (walk < 0) {
+          console.log('1: ' + (index + 1));
+          jumpTo.call(self, (index + 1));
+        } else {
+          console.log('2: ' + (index - 1));
+          jumpTo.call(self, (index - 1));
+        }
+      });
+
+      isDown = false;
+    });
+
+    // actual slider walking on pointer move
+    this.display.addEventListener(pointerMove, function(e) {
+      e.preventDefault();
+      if (!isDown) return;
+      walk = (isTouchDevice() ? e.changedTouches[0].pageX : e.pageX) - startX;
+      self.display.style.left = scrollLeft + walk + 'px';
     });
 
   }

@@ -16,7 +16,7 @@
 .slidex3000__item {
   white-space: normal;
   display: inline-block;
-  height: 250px;
+  /*height: 250px;*/
   width: 100%;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .slidex3000__item > img {
-  height: 250px;
+  /*height: 250px;*/
   width: 100%;
   object-fit: cover;
 }
