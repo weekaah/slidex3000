@@ -25,8 +25,11 @@
     this.controls;
     this.dots = [];
 
-    // flags
+    // helpers
     this.length = this.display.children.length;
+    this.current = 1;
+    this.isClicked;
+    this.animation = '.5s 0s ease-in-out';
 
     // start up the slider
     this.initialize();
@@ -38,10 +41,13 @@
       buildNav.call(this);
       buildDots.call(this);
       buildItems.call(this);
-      console.log(this.items);
+      cloneItems.call(this);
+      initialiteEvents.call(this);
     }
   }
 
+  // dom buildout
+  // ----------------------------------
   function buildCore() {
     // build container
     this.slider = document.createElement('div');
@@ -108,6 +114,68 @@
     }
   }
 
+  function cloneItems() {
+    var items = this.display.children;
+    // clone 1st item: copy and insert it after the last item
+    items[this.length - 1].insertAdjacentHTML('afterend', items[0].outerHTML);
+
+    // clone last item: copy and insert it before the 1st item
+    items[0].insertAdjacentHTML('beforebegin', items[this.length - 1].outerHTML);
+  }
+
+  // functionality
+  // ----------------------------------
+  function scroll(delta, walk) {
+    this.current += delta;
+    this.display.style.left = (-100 * this.current) + '%';
+    this.display.style.transition = 'left' + this.animation;
+  }
+
+  // helpers
+  // ----------------------------------
+  function isTouchDevice () {
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) ? true : false;
+  }
+
+  // event handling
+  // ----------------------------------
+  function initialiteEvents() {
+    var self = this,
+        isDown = false, // register when mouse is down
+        startX, // get mouseX position on mouse down to start with
+        scrollLeft, // get container scrollLeft on mouse down to start with
+        walk,
+        pointerDown = (isTouchDevice() ? 'touchstart' : 'mousedown'),
+        pointerUp = (isTouchDevice() ? 'touchend' : 'mouseup'),
+        pointerMove = (isTouchDevice() ? 'touchmove' : 'mousemove');
+
+    // handle slider browsing
+    this.navButtons.forEach(function(button) {
+      button.addEventListener(pointerDown, function(){
+        if (self.isClicked) return;
+        if (this.getAttribute('class') === 'slidex3000__back') {
+          self.isClicked = true;
+          scroll.call(self, -1);
+        } else if (this.getAttribute('class') === 'slidex3000__fore') {
+          self.isClicked = true;
+          scroll.call(self, 1);
+        }
+      });
+    });
+
+    // make sure animation is done before allowing the next event
+    this.display.addEventListener('transitionend', function(){
+      var cycle = (self.current === 0 || self.current > self.length);
+
+      this.style.transition = 'none';
+      self.isClicked = false;
+    });
+
+
+  }
+
+  // plugin export
+  // ----------------------------------
   window.slidex3000 = function(selector, settings) {
     return new Slider(selector, settings);
   };
