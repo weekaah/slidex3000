@@ -20,33 +20,14 @@
   width: 100%;
 }
 
-.slidex3000__headline {
-  background-color: rgba(51, 51, 51, 0.35);
-  color: #fff;
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 250px;
-  text-align: center;
-  height: 100%;
-  width: 100%;
-  margin-top: 0;
-  margin-bottom: 0;
-  position: absolute;
-}
-
-@media (min-width: 768px) {
-  .slidex3000__headline {
-    font-size: 50px;
-  }
-}
-
 .slidex3000__item > img {
   /*height: 250px;*/
   width: 100%;
   object-fit: cover;
 }
 
-.slidex3000__back, .slidex3000__fore {
+.slidex3000__back,
+.slidex3000__fore {
   background-color: transparent;
   border: 0;
   height: 76px;
@@ -55,23 +36,38 @@
   top: calc(50% - 38px);
 }
 
-.slidex3000__back::before, .slidex3000__back::after, .slidex3000__fore::before, .slidex3000__fore::after {
+.slidex3000__back:focus,
+.slidex3000__fore:focus {
+  outline: none;
+}
+
+.slidex3000__back:hover,
+.slidex3000__fore:hover {
+  background-color: rgba(0, 0, 0, .25);
+}
+
+.slidex3000__back::before,
+.slidex3000__back::after,
+.slidex3000__fore::before,
+.slidex3000__fore::after {
   background-color: #fff;
   content: "";
   display: block;
-  height: 4px;
-  width: 17px;
+  height: 2px;
+  width: 26px;
   position: absolute;
   left: calc(50% - 14px);
 }
 
-.slidex3000__back::before, .slidex3000__fore::before {
-  margin-top: 3px;
+.slidex3000__back::before,
+.slidex3000__fore::before {
+  margin-top: 8px;
   transform: rotate(45deg);
 }
 
-.slidex3000__back::after, .slidex3000__fore::after {
-  margin-top: -6px;
+.slidex3000__back::after,
+.slidex3000__fore::after {
+  margin-top: -9px;
   transform: rotate(-45deg);
 }
 
@@ -83,8 +79,8 @@
 .slidex3000__controls {
   text-align: center;
   width: 100%;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 1rem 0;
+  margin: 0;
   position: absolute;
   bottom: 0;
 }
@@ -98,11 +94,18 @@
 }
 
 .slidex3000__dot {
-  background-color: #fff;
-  border: 0;
+  background-color: transparent;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 2px;
   border-radius: 50%;
-  height: 15px;
-  width: 15px;
+  display: block;
+  height: 1rem;
+  width: 1rem;
+}
+
+.slidex3000__dot:hover {
+  background-color: rgba(255, 255, 255, .5);
 }
 
 .slidex3000__dot:focus {
@@ -110,5 +113,11 @@
 }
 
 .slidex3000__dot--active {
-  background-color: #00a1d1;
+  background-color: #fff;
+  border-color: transparent;
+}
+
+.slidex3000__dot--active {
+  border-color: #fff;
+  background-color: #fff;
 }

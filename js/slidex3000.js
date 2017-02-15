@@ -84,7 +84,7 @@
   function buildDots() {
     var self = this;
 
-    this.controls = document.createElement('div');
+    this.controls = document.createElement('ul');
     this.controls.classList.add('slidex3000__controls');
 
     for (var i = 0; i < this.length; i++) {
