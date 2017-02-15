@@ -13,6 +13,7 @@
     // slider core elements
     this.display = document.querySelector(selector);
     this.slider;
+    this.items = [];
 
     // slider navigation
     this.nav;
@@ -27,6 +28,7 @@
     // flags
     this.length = this.display.children.length;
 
+    // start up the slider
     this.initialize();
   };
 
@@ -35,6 +37,8 @@
       buildCore.call(this);
       buildNav.call(this);
       buildDots.call(this);
+      buildItems.call(this);
+      console.log(this.items);
     }
   }
 
@@ -92,6 +96,16 @@
     }
 
     this.slider.appendChild(this.controls);
+  }
+
+  function buildItems() {
+    var items = this.display.querySelectorAll('li');
+
+    for (var i = 0; i < items.length; i++) {
+      this.items.push(items[i]);
+
+      items[i].classList.add('slidex3000__item');
+    }
   }
 
   window.slidex3000 = function(selector, settings) {
