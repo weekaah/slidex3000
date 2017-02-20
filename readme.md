@@ -15,6 +15,6 @@ Initialize the plugin by running `slidex3000();`
 
 ```html
 <script>
-  scrollprogress('body');
+  slidex300('.myCarousel');
 </script>
 ```
