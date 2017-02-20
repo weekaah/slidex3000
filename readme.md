@@ -1,5 +1,5 @@
 # Slidex 3000
-Plain JavaScript slider plugin
+Plain JavaScript Slider
 
 ## Demo
 [Demo](https://weekaah.github.io/slidex3000)
@@ -7,7 +7,6 @@ Plain JavaScript slider plugin
 ## Installation
 Include `slidex3000.min.js` inside `<body>` tag.
 ```html
-<!-- javascript -->
 <script src="slidex3000.min.js"></script>
 ```
 
