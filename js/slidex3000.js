@@ -157,7 +157,6 @@
   }
 
   function jumpTo(walk) {
-    console.log(walk);
     this.current = walk;
     this.display.style.left = (-100 * walk) + '%';
     this.display.style.transition = 'left ' + this.animation;
@@ -254,10 +253,8 @@
         // position the slide
         self.isClicked = true;
         if (walk < 0) {
-          console.log('1: ' + (index + 1));
           jumpTo.call(self, (index + 1));
         } else {
-          console.log('2: ' + (index - 1));
           jumpTo.call(self, (index - 1));
         }
       });
