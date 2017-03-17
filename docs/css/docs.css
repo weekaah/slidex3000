@@ -1,0 +1,81 @@
+body {
+  background-color: #263138;
+}
+
+.container {
+  /*display: flex;
+  min-height: 100vh;*/
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
+.center-block {
+  /*align-self: center;
+  vertical-align: middle;*/
+}
+
+.slidex3000__container {
+  box-shadow: 0 0 3em rgba(0, 0, 0, .5);
+}
+
+.heading {
+  color: #fff;
+
+  font-family: 'Space Mono', monospace;
+  font-size: 4em;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+
+  text-shadow: .15em .15em 0 rgba(255, 0, 102, .2), -.15em -.15em 0 rgba(0, 184, 255, .2);
+}
+
+.lead {
+  color: #fff;
+
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.3em;
+  text-align: center;
+
+  margin-bottom: 2em;
+}
+
+.button-link {
+  border: 3px solid #fff;
+
+  color: #fff;
+  font-family: 'Space Mono', monospace;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  display: block;
+  margin: 2em auto 4em;
+  padding: 1em 2em;
+  max-width: 300px;
+
+  position: relative;
+}
+
+.button-link::before,
+.button-link::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: -1;
+}
+
+.button-link::before {
+  border: 3px solid rgba(0, 184, 255, .2);
+  top: -10px;
+  left: -10px;
+}
+
+.button-link::after {
+  border: 3px solid rgba(255, 0, 102, .2);
+  top: 5px;
+  left: 5px;
+}
