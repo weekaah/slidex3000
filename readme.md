@@ -15,6 +15,6 @@ Initialize the plugin by running `slidex3000();`
 
 ```html
 <script>
-  slidex300('.myCarousel');
+  slidex3000('.myCarousel');
 </script>
 ```
