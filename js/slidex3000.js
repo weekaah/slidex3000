@@ -10,35 +10,41 @@
 }(this, function() {
 
   var Slider = function(selector, settings) {
+
     // slider core elements
+    // --------------------
     this.display = document.querySelector(selector);
-    this.slider;
+    // this.slider;
     this.items = [];
 
     // slider navigation
-    this.nav;
-    this.back;
-    this.fore;
+    // -----------------
+    // this.nav;
+    // this.back;
+    // this.fore;
     this.navButtons = [];
 
     // slider tab navigation
-    this.controls;
+    // ---------------------
+    // this.controls;
     this.dots = [];
 
     // helpers
+    // -------
     this.length = this.display.children.length;
     this.current = 1;
     this.isClicked;
     this.animation = '.5s 0s ease-in-out';
 
     // start up the slider
+    // -------------------
     this.initialize();
   };
 
   Slider.prototype = {
     initialize: function() {
       buildCore.call(this);
-      buildNav.call(this);
+      buildNavigation.call(this);
       buildDots.call(this);
       cloneItems.call(this);
       buildItems.call(this);
@@ -61,12 +67,14 @@
     this.display.classList.add('slidex3000__slider');
   }
 
-  function buildNav() {
+
+  function buildNavigation() {
     // build nav container
     this.nav = document.createElement('div');
     this.nav.classList.add('slidex3000__nav');
 
     // build back and forward buttons
+    // add them to the navButtons array for reference
     this.back = document.createElement('button');
     this.back.classList.add('slidex3000__back');
     this.nav.appendChild(this.back);
@@ -77,18 +85,20 @@
     this.nav.appendChild(this.fore);
     this.navButtons.push(this.fore);
 
-    // insert nav into dom
+    // insert nav into DOM 
     this.slider.appendChild(this.nav);
   }
 
-  function buildDots() {
-    var self = this;
 
+  function buildDots() {
+    var noOfItems = this.length;
+
+    // create a container div to hold the dots
     this.controls = document.createElement('ul');
     this.controls.classList.add('slidex3000__controls');
 
-    for (var i = 0; i < this.length; i++) {
-
+    // build the dots
+    for (var i = 0; i < noOfItems; i++) {
       var li = document.createElement('li'),
           dot = document.createElement('button');
 
@@ -96,16 +106,19 @@
       dot.classList.add('slidex3000__dot');
 
       li.appendChild(dot);
-      self.controls.appendChild(li);
+      this.controls.appendChild(li);
 
+      // add the dots to the array for reference
       this.dots.push(dot);
     }
 
     // indicate active item by styling the dot
     this.dots[this.current - 1].classList.add('slidex3000__dot--active');
 
+    // insert the dots in the DOM
     this.slider.appendChild(this.controls);
   }
+
 
   function buildItems() {
     var items = this.display.querySelectorAll('li');
@@ -117,14 +130,17 @@
     }
   }
 
+
   function cloneItems() {
     var items = this.display.children;
+
     // clone 1st item: copy and insert it after the last item
     items[this.length - 1].insertAdjacentHTML('afterend', items[0].outerHTML);
 
     // clone last item: copy and insert it before the 1st item
     items[0].insertAdjacentHTML('beforebegin', items[this.length - 1].outerHTML);
   }
+
 
   // functionality
   // ----------------------------------
@@ -134,20 +150,22 @@
     this.display.style.transition = 'left' + this.animation;
   }
 
+
   function resetScroll(cycle) {
-    if (cycle) {
-      if (this.current > this.length) {
-        this.display.style.left = '-100%';
-        this.current = 1;
-      } else if (this.current === 0) {
-        this.display.style.left = (-100 * this.length) + '%';
-        this.current = this.length;
-      }
+    if (!cycle) return;
+
+    if (this.current > this.length) {
+      this.display.style.left = '-100%';
+      this.current = 1;
+    } else if (this.current === 0) {
+      this.display.style.left = (-100 * this.length) + '%';
+      this.current = this.length;
     }
   }
 
+
   function updateActiveDot(i) {
-    this.dots.forEach(function(item, index, array){
+    this.dots.forEach(function(item, index, array) {
       if (array.indexOf(item) === i) {
         item.classList.add('slidex3000__dot--active');
       } else {
@@ -156,67 +174,110 @@
     });
   }
 
-  function jumpTo(walk) {
-    this.current = walk;
-    this.display.style.left = (-100 * walk) + '%';
+
+  function jumpTo(slideNo) {
+    // set the current item to
+    this.current = slideNo;
+
+    // slide and animate
+    this.display.style.left = (-100 * slideNo) + '%';
     this.display.style.transition = 'left ' + this.animation;
   }
 
+
+
+
   // helpers
   // ----------------------------------
-  function isTouchDevice () {
-    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) ? true : false;
+  function isTouchDevice() {
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0));
   }
 
-  function dropPixels(value) {
-    var oldArr = value.split(''),
+
+  function dropPixels(valueInPx) {
+    var oldArr = valueInPx.split(''),
         newArr;
 
     oldArr.splice(-2, 2);
 
     newArr = oldArr.join('');
-
+    
     return parseInt(newArr);
   }
+
+
+  function debounce(func, wait, immediate) {
+  	var timeout;
+
+  	return function() {
+  		var context = this; 
+      var args = arguments;
+
+  		var later = function() {
+  			timeout = null;
+  			if (!immediate) func.apply(context, args);
+  		};
+
+  		var callNow = immediate && !timeout;
+
+  		clearTimeout(timeout);
+
+  		timeout = setTimeout(later, wait);
+      
+  		if (callNow) func.apply(context, args);
+  	};
+  };
+
+
+
 
   // event handling
   // ----------------------------------
   function initialiteEvents() {
     var self = this,
-        isDown = false, // register when mouse is down
-        startX, // get mouseX position on mouse down to start with
-        scrollLeft, // get container scrollLeft on mouse down to start with
-        walk,
+        // register if mouse is down
+        isDown = false, 
+        // get mouseX position on mouse down to start with
+        startX, 
+        // get container scrollLeft on mouse down to start with
+        scrollLeft, 
+        walk = 0,
+        // set events based on device
         pointerDown = (isTouchDevice() ? 'touchstart' : 'mousedown'),
         pointerUp = (isTouchDevice() ? 'touchend' : 'mouseup'),
         pointerMove = (isTouchDevice() ? 'touchmove' : 'mousemove');
 
-    // handle slider browsing
+
+    // slider browsing / sliding back and forth
+    // ----------------------------------------
     this.navButtons.forEach(function(button) {
       button.addEventListener(pointerDown, function() {
         // prevent from running if previous event is not finished
         if (self.isClicked) return;
 
-        // check what button was clicked and accordigli browse back or forward
+        // check what button was clicked and browse accordingly back or forward
         if (this.getAttribute('class') === 'slidex3000__back') {
-          self.isClicked = true;
           scroll.call(self, -1);
         } else if (this.getAttribute('class') === 'slidex3000__fore') {
-          self.isClicked = true;
           scroll.call(self, 1);
         }
+        
+        self.isClicked = true;
       });
     });
 
     // slider jumping
+    // --------------
     this.dots.forEach(function(dot, index) {
       dot.addEventListener(pointerDown, function() {
         jumpTo.call(self, (index + 1));
+
         updateActiveDot.call(self, index);
       });
     });
 
     // running afer the event is finished
+    // ----------------------------------
     this.display.addEventListener('transitionend', function() {
       var cycle = (self.current === 0 || self.current > self.length);
 
@@ -231,6 +292,7 @@
     });
 
     // dragging
+    // --------
     // register that the pointer is down
     this.slider.addEventListener(pointerDown, function(e) {
       e.preventDefault();
@@ -241,22 +303,29 @@
 
     // register that the pointer is up from slider
     this.slider.addEventListener(pointerUp, function(e) {
+      e.preventDefault();
       isDown = false;
     });
 
     // register that the pointer is up from slide
     this.items.forEach(function(item, index) {
       item.addEventListener(pointerUp, function(e) {
+        e.preventDefault();
+
         // prevent from running if previous event is not finished
         if (self.isClicked) return;
 
-        // position the slide
-        self.isClicked = true;
+        // prevent touck slide without moving pointer
+        if (walk === 0) return;
+
         if (walk < 0) {
           jumpTo.call(self, (index + 1));
         } else {
           jumpTo.call(self, (index - 1));
         }
+
+        walk = 0;
+        self.isClicked = true;
       });
 
       isDown = false;
@@ -265,12 +334,16 @@
     // actual slider walking on pointer move
     this.display.addEventListener(pointerMove, function(e) {
       e.preventDefault();
+
       if (!isDown) return;
+
       walk = (isTouchDevice() ? e.changedTouches[0].pageX : e.pageX) - startX;
       self.display.style.left = scrollLeft + walk + 'px';
     });
-
   }
+
+
+
 
   // plugin export
   // ----------------------------------
